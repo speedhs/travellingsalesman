@@ -61,7 +61,7 @@ const App = () => {
   return (
     <div className="app-container">
       <div className="header">
-        <h1>TravellingSalesman</h1>
+        <h1><b>TravellingSalesman</b></h1>
         <button className="btn btn-purple" onClick={handleAddItineraryClick}>
           + Add Itinerary
         </button>

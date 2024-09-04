@@ -52,7 +52,7 @@ const AddItineraryForm = ({ onAddItinerary, onClose }) => {
           />
           <Textarea
             type="text"
-            placeholder="Description"
+            placeholder="Itinerary"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
           />
