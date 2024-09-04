@@ -36,3 +36,31 @@
     font-weight: bold;
   }
   
+  .itinerary-card.blurred {
+    filter: blur(4px); /* Blur the card background */
+    transition: filter 0.3s ease; /* Smooth transition for blurring effect */
+  }
+  
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background for overlay */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000; /* Ensure the overlay appears above other content */
+  }
+  
+  .modal-content {
+    position: relative;
+    width: 80vw; /* Adjust width as needed */
+    max-width: 600px; /* Optional: max-width for large screens */
+    background: #fff; /* Background color for the modal content */
+    padding: 20px; /* Padding around the content */
+    border-radius: 8px; /* Optional: rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add shadow for depth */
+  }
+  

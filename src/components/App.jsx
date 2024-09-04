@@ -8,6 +8,15 @@ import './App.css';
 const App = () => {
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [expandedCard, setExpandedCard] = useState(null);
+
+  const handleCardClick = (itinerary) => {
+    setExpandedCard(itinerary); // Set the currently expanded card
+  };
+
+  const handleCloseModal = () => {
+    setExpandedCard(null); // Close the expanded card
+  };
 
   // Fetch itineraries from Supabase when component mounts
   useEffect(() => {
@@ -54,10 +63,6 @@ const App = () => {
     setShowForm(false);  // Close the form modal
   };
 
-  const handleCardClick = (itinerary) => {
-    alert(`Details for ${itinerary.place}`);  // Placeholder for card click action
-  };
-
   return (
     <div className="app-container">
       <div className="header">
@@ -70,14 +75,15 @@ const App = () => {
       {/* Show the add itinerary form when showForm is true */}
       {showForm && <AddItineraryForm onAddItinerary={addItinerary} onClose={closeModal} />}
 
-      {/* Render the gallery of itineraries */}
       <div className="itinerary-gallery">
         {itineraries.map((itinerary, index) => (
           <ItineraryCard 
-            key={index}
-            itinerary={itinerary}
-            onClick={() => handleCardClick(itinerary)}
-          />
+          key={index}
+          itinerary={itinerary}
+          isExpanded={expandedCard === itinerary}
+          onClick={handleCardClick}
+          onClose={handleCloseModal}
+        />
         ))}
       </div>
     </div>
