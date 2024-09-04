@@ -1,0 +1,75 @@
+/* Set the entire page background to dark black */
+body {
+    background-color: #000;
+    color: #fff;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+  }
+  
+  /* Container for ItineraryGallery */
+  .container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  /* Grid styling for itinerary cards */
+  .itinerary-gallery {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    height: 80vh; 
+/* Occupy 80% of the viewport height for cards */
+    overflow-y: auto;
+    margin-top: 10px;
+  }
+  
+  /* Styles for the itinerary cards */
+  .itinerary-card {
+    background-color: #000; /* Slightly lighter black for the card background */
+    border: 1px solid #fff; /* White borders */
+    color: #fff; /* White text */
+    transition: transform 0.2s;
+    position: relative;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+  
+  .itinerary-card:hover {
+    transform: scale(1.05); /* Slight zoom on hover */
+  }
+  
+  .card-title {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .card-subtitle {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1rem;
+  }
+  
+  .details .btn {
+    border-radius: 20px;
+    padding: 0.25rem 0.75rem;
+  }
+  
+  .details .badge {
+    background-color: #000;
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 0.5rem;
+    border-radius: 15px;
+  }
+  

@@ -1,0 +1,38 @@
+/* ItineraryCard.css */
+
+.itinerary-card {
+    background-color: #000;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: 15px;
+    border-radius: 10px;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+  }
+  
+  .itinerary-card:hover {
+    transform: scale(1.05);
+  }
+  
+  .itinerary-card h2 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+  }
+  
+  .itinerary-card p {
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+  
+  .itinerary-card .description {
+    font-size: 0.85rem;
+    color: #aaa;
+  }
+  
+  .itinerary-card .card-footer {
+    margin-top: 10px;
+    font-size: 0.85rem;
+    font-weight: bold;
+  }
+  
