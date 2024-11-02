@@ -6,8 +6,8 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 // Debug: Check if environment variables are correctly loaded
-console.log("Supabase URL:", supabaseUrl);
-console.log("Supabase ANON KEY:", supabaseAnonKey);
+// console.log("Supabase URL:", supabaseUrl);
+// console.log("Supabase ANON KEY:", supabaseAnonKey);
 
 // Validate that environment variables are present
 if (!supabaseUrl || !supabaseAnonKey) {

@@ -4,10 +4,13 @@ import AddItineraryForm from './AddItineraryForm'; // Ensure this is your existi
 import ItineraryCard from './ItineraryCard';
 import { supabase } from '@/supabase/Supabase'; // Supabase client import
 import './App.css';
+import Filter from './Filter.jsx';
 
 const App = () => {
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
+  const [showFilter, setShowFilter] = useState(false); 
+  const [filteredItineraries, setFilteredItineraries] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null);
 
   const handleCardClick = (itinerary) => {
@@ -41,6 +44,7 @@ const App = () => {
   // Function to add a new itinerary using Supabase
   const addItinerary = async (newItinerary) => {
     try {
+      console.log(newItinerary);
       const { data, error } = await supabase
         .from('tours')
         .insert([newItinerary]);  // Insert the new itinerary into Supabase
@@ -59,6 +63,19 @@ const App = () => {
     setShowForm(true);  // Show the add itinerary form
   };
 
+  const handleApplyFilter = (filterCriteria) => {
+    // Filter the itineraries based on the criteria
+    const filtered = itineraries.filter(itinerary => {
+      const matchesPlace = filterCriteria.place ? itinerary.location.includes(filterCriteria.place) : true;
+      const matchesDays = filterCriteria.days ? itinerary.days === Number(filterCriteria.days) : true;
+      const matchesBudget = filterCriteria.budget ? itinerary.budget <= Number(filterCriteria.budget) : true;
+
+      return matchesPlace && matchesDays && matchesBudget;
+    });
+    setFilteredItineraries(filtered);
+    setShowFilter(false); // Close the filter dialog
+  };
+
   const closeModal = () => {
     setShowForm(false);  // Close the form modal
   };
@@ -67,23 +84,26 @@ const App = () => {
     <div className="app-container">
       <div className="header">
         <h1><b>TravellingSalesman</b></h1>
+        <button className="btn btn-purple" onClick={() => setShowFilter(true)}>
+          Filter
+        </button>
         <button className="btn btn-purple" onClick={handleAddItineraryClick}>
           + Add Itinerary
         </button>
       </div>
 
-      {/* Show the add itinerary form when showForm is true */}
-      {showForm && <AddItineraryForm onAddItinerary={addItinerary} onClose={closeModal} />}
+      {showFilter && <Filter onApplyFilter={handleApplyFilter} />}
+
+      {showForm && <AddItineraryForm onAddItinerary={addItinerary} onClose={() => setShowForm(false)} />}
 
       <div className="itinerary-gallery">
-        {itineraries.map((itinerary, index) => (
+        {(filteredItineraries.length > 0 ? filteredItineraries : itineraries).map((itinerary, index) => (
           <ItineraryCard 
-          key={index}
-          itinerary={itinerary}
-          isExpanded={expandedCard === itinerary}
-          onClick={handleCardClick}
-          onClose={handleCloseModal}
-        />
+            key={index}
+            itinerary={itinerary}
+            onClick={handleCardClick}
+            onClose={handleCloseModal}
+          />
         ))}
       </div>
     </div>
