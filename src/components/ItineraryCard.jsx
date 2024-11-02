@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
@@ -8,14 +10,32 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import "./ItineraryCard.css"; // Ensure to import your CSS file for styling
+import Likes from './Likes';
+import { supabase } from '@/supabase/Supabase'; // Supabase client import
 
-const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose }) => {
+
+
+const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose,handleLikeItinerary}) => {
   const cardRef = useRef(null);
-
+  console.log("helllooo")
   const handleCardClick = (e) => {
     e.stopPropagation(); // Prevent click event from bubbling up
     onClick(itinerary); // Pass the itinerary object to the onClick handler
   };
+
+  // const handleLikeItinerary = async (itineraryId, itineraryLikes) => {
+  //   const { data, error } = await supabase
+  //     .from('tours')
+  //     .update({ likes: itineraryLikes+1 }) // Increment likes
+  //     .eq('id', itineraryId); // Assuming 'id' is the primary key of the tours table
+
+  //   if (error) {
+  //     console.error('Error updating likes:', error);
+  //   } else {
+  //     // Refresh the itineraries to get the updated likes count
+  //     fetchItineraries();
+  //   }
+  // };
 
   useEffect(() => {
     const handleClickOutside = (e) => {
@@ -50,6 +70,10 @@ const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose }) => {
         <CardFooter>
           <p>{itinerary.days} Days | {itinerary.budget} Rs | {itinerary.group_size} People</p>
         </CardFooter>
+        <Likes
+              initialLikes={itinerary.likes} // Pass initial likes count
+              onLike={() => handleLikeItinerary(itinerary.id, itinerary.likes)} // Pass the function to handle likes
+        />
       </Card>
 
       {isExpanded && (

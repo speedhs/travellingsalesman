@@ -5,6 +5,7 @@ import ItineraryCard from './ItineraryCard';
 import { supabase } from '@/supabase/Supabase'; // Supabase client import
 import './App.css';
 import Filter from './Filter.jsx';
+import Likes from './Likes';
 
 const App = () => {
   const [itineraries, setItineraries] = useState([]);
@@ -14,6 +15,7 @@ const App = () => {
   const [expandedCard, setExpandedCard] = useState(null);
 
   const handleCardClick = (itinerary) => {
+    console.log("handleCardClicked fired");
     setExpandedCard(itinerary); // Set the currently expanded card
   };
 
@@ -21,22 +23,24 @@ const App = () => {
     setExpandedCard(null); // Close the expanded card
   };
 
+  const fetchItineraries = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('tours')  // Replace with your actual table name
+        .select('*');
+      if (error) {
+        console.error('Error fetching itineraries:', error);
+      } else {
+        setItineraries(data);
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err);
+    }
+  };
+
   // Fetch itineraries from Supabase when component mounts
   useEffect(() => {
-    const fetchItineraries = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('tours')  // Replace with your actual table name
-          .select('*');
-        if (error) {
-          console.error('Error fetching itineraries:', error);
-        } else {
-          setItineraries(data);
-        }
-      } catch (err) {
-        console.error('Unexpected error:', err);
-      }
-    };
+    
 
     fetchItineraries();
   }, []);
@@ -76,6 +80,21 @@ const App = () => {
     setShowFilter(false); // Close the filter dialog
   };
 
+  const handleLikeItinerary = async (itineraryId, itineraryLikes) => {
+    const { data, error } = await supabase
+      .from('tours')
+      .update({ likes: itineraryLikes+1 }) // Increment likes
+      .eq('id', itineraryId); // Assuming 'id' is the primary key of the tours table
+
+    if (error) {
+      console.error('Error updating likes:', error);
+    } else {
+      // Refresh the itineraries to get the updated likes count
+      fetchItineraries();
+    }
+  };
+
+
   const closeModal = () => {
     setShowForm(false);  // Close the form modal
   };
@@ -93,7 +112,6 @@ const App = () => {
       </div>
 
       {showFilter && <Filter onApplyFilter={handleApplyFilter} />}
-
       {showForm && <AddItineraryForm onAddItinerary={addItinerary} onClose={() => setShowForm(false)} />}
 
       <div className="itinerary-gallery">
@@ -103,7 +121,13 @@ const App = () => {
             itinerary={itinerary}
             onClick={handleCardClick}
             onClose={handleCloseModal}
-          />
+            handleLikeItinerary={handleLikeItinerary}
+          >
+            <Likes
+              initialLikes={itinerary.likes} // Pass initial likes count
+              onLike={() => handleLikeItinerary(itinerary.id)} // Pass the function to handle likes
+            />
+          </ItineraryCard>
         ))}
       </div>
     </div>

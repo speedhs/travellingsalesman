@@ -1,0 +1,17 @@
+.likes-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: brown;
+    border-color: blue;
+  }
+  
+  .heart-icon {
+    font-size: 1.5rem; /* Adjust size as needed */
+    transition: color 0.2s ease;
+  }
+  
+  .liked {
+    color: red; /* Heart turns red when liked */
+  }
+  
