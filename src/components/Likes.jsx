@@ -5,8 +5,8 @@ import './Likes.css'; // Add your CSS styling
 const Likes = ({ initialLikes, onLike }) => {
     const [likes, setLikes] = useState(initialLikes);
     const [isLiked, setIsLiked] = useState(false);
-    
-    console.log("LLLIKKESSS")
+
+
   const handleLikeClick = async () => {
     if (!isLiked) {
       setLikes(likes + 1);

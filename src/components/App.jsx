@@ -15,8 +15,7 @@ const App = () => {
   const [expandedCard, setExpandedCard] = useState(null);
 
   const handleCardClick = (itinerary) => {
-    console.log("handleCardClicked fired");
-    setExpandedCard(itinerary); // Set the currently expanded card
+    setExpandedCard(itinerary);
   };
 
   const handleCloseModal = () => {
@@ -119,6 +118,7 @@ const App = () => {
           <ItineraryCard 
             key={index}
             itinerary={itinerary}
+            isExpanded={expandedCard === itinerary}
             onClick={handleCardClick}
             onClose={handleCloseModal}
             handleLikeItinerary={handleLikeItinerary}
