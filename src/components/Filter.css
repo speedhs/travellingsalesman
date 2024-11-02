@@ -1,0 +1,29 @@
+.filter-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: black;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+  }
+  
+  .filter-input {
+    margin-bottom: 10px;
+  }
+  
+  .filter-input label {
+    display: block;
+    margin-bottom: 5px;
+  }
+  
+  .filter-input input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    color: black;
+  }
+  
