@@ -15,6 +15,7 @@ import Likes from './Likes';
 
 
 const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose,handleLikeItinerary}) => {
+  console.log(itinerary)
   const cardRef = useRef(null);
   const handleCardClick = (e) => {
     e.stopPropagation(); // Prevent click event from bubbling up
