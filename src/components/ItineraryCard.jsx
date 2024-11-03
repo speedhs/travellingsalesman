@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useEffect, useRef } from "react";
 import {
   Card,
@@ -7,14 +9,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import "./ItineraryCard.css"; // Ensure to import your CSS file for styling
+import "./ItineraryCard.css";
+import Likes from './Likes';
 
-const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose }) => {
+
+
+const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose,handleLikeItinerary}) => {
   const cardRef = useRef(null);
-
   const handleCardClick = (e) => {
     e.stopPropagation(); // Prevent click event from bubbling up
-    onClick(itinerary); // Pass the itinerary object to the onClick handler
+    onClick(itinerary);
   };
 
   useEffect(() => {
@@ -50,6 +54,10 @@ const ItineraryCard = ({ itinerary, onClick, isExpanded, onClose }) => {
         <CardFooter>
           <p>{itinerary.days} Days | {itinerary.budget} Rs | {itinerary.group_size} People</p>
         </CardFooter>
+        <Likes
+              initialLikes={itinerary.likes} // Pass initial likes count
+              onLike={() => handleLikeItinerary(itinerary.id, itinerary.likes)} // Pass the function to handle likes
+        />
       </Card>
 
       {isExpanded && (
