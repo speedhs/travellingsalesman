@@ -1,29 +1,152 @@
+.filter-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
 .filter-container {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: black;
-    padding: 20px;
-    border-radius: 5px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    z-index: 1000;
+  background-color: #000;
+  border: 1px solid #fff;
+  border-radius: 10px;
+  padding: 2rem;
+  width: 30%;
+  max-width: 600px;
+  min-width: 300px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-header {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.modal-header h2 {
+  margin: 0;
+  color: #fff;
+  font-size: 1.5rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  opacity: 0.8;
+}
+
+.filter-input {
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.filter-input label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #fff;
+}
+
+.filter-input input {
+  width: 100%;
+  padding: 0.75rem;
+  border: 1px solid #fff;
+  border-radius: 5px;
+  background-color: #000;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.filter-input input::placeholder {
+  color: #666;
+}
+
+.filter-button {
+  width: 100%;
+  margin-top: 1.5rem;
+  padding: 0.75rem;
+  font-size: 1rem;
+  background-color: #7c3aed;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.filter-button:hover {
+  background-color: #6d28d9;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 1200px) {
+  .filter-container {
+    width: 40%;
   }
-  
-  .filter-input {
-    margin-bottom: 10px;
+}
+
+@media screen and (max-width: 900px) {
+  .filter-container {
+    width: 50%;
+    padding: 1.75rem;
   }
-  
-  .filter-input label {
-    display: block;
-    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 768px) {
+  .filter-container {
+    width: 70%;
+    padding: 1.5rem;
   }
-  
+
+  .modal-header h2 {
+    font-size: 1.25rem;
+  }
+
   .filter-input input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: black;
+    padding: 0.625rem;
+    font-size: 0.9rem;
   }
-  
+}
+
+@media screen and (max-width: 480px) {
+  .filter-backdrop {
+    padding: 0.5rem;
+  }
+
+  .filter-container {
+    width: 90%;
+    padding: 1.25rem;
+    min-width: auto;
+  }
+
+  .modal-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .modal-close {
+    top: -5px;
+    right: -5px;
+    font-size: 1.25rem;
+  }
+
+  .filter-button {
+    margin-top: 1rem;
+    padding: 0.625rem;
+  }
+}

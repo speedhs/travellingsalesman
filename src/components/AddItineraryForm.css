@@ -55,10 +55,10 @@
   font-size: 1rem;
 }
 
-.modal-close {
+.modal-backdrop .modal-container .modal-close {
   position: absolute;
-  top: 1rem;
-  right: 1rem;
+  top: 1.5rem;      /* Adds more space from the top */
+  right: 1.5rem;    /* Adds more space from the right */
   background: none;
   border: none;
   color: #fff;
@@ -67,6 +67,7 @@
   padding: 0.5rem;
   line-height: 1;
 }
+
 
 /* Responsive Breakpoints */
 @media screen and (max-width: 1200px) {
