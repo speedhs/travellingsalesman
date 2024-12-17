@@ -1,24 +1,25 @@
 "use client";
-import React, { useState } from 'react';
-import { supabase } from '@/supabase/Supabase';
-import './Login.css';
+import React, { useState } from "react";
+import { supabase } from "@/supabase/Supabase";
+import { useNavigate } from "react-router-dom";
+import "./Login.css";
 
 const Login = () => {
-  const [email, setEmail] = useState('');
-  const [isLinkSent, setIsLinkSent] = useState(false);
-  const [error, setError] = useState('');
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
-  };
-
-  const sendLink = async () => {
+  const handleLogin = async () => {
     try {
-      const { error } = await supabase.auth.signInWithOtp({
-        email: email,
-      });
+      console.log("handle-login triggered", username, password);
+      const { error } = await supabase
+        .from("user")
+        .insert([{ username, password }]); // Save user details in Supabase
       if (error) throw error;
-      setIsLinkSent(true);
+
+      console.log("User saved successfully!");
+      navigate("/"); // Redirect to home route
     } catch (err) {
       setError(err.message);
     }
@@ -26,17 +27,20 @@ const Login = () => {
 
   return (
     <div className="login-container">
-      <h2>Login / Sign Up</h2>
+      <h2>Login</h2>
       <input
-        type="email"
-        placeholder="Enter your email"
-        value={email}
-        onChange={handleEmailChange}
+        type="text"
+        placeholder="Enter username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
       />
-      <button onClick={sendLink}>
-        Send Magic Link
-      </button>
-      {isLinkSent && <p>Check your email for the magic link!</p>}
+      <input
+        type="password"
+        placeholder="Enter password"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+      />
+      <button onClick={handleLogin}>Login</button>
       {error && <p className="error-message">{error}</p>}
     </div>
   );
