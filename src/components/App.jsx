@@ -9,6 +9,7 @@ import Filter from "./Filter.jsx";
 import Login from "./Login";
 import Register from "./Register";
 import Likes from "./Likes";
+import LikedItineraries from "./LikedItineraries";
 import { SignJWT, jwtVerify } from "jose";
 
 const SECRET_KEY = "your_secret_key"; // Replace with a secure key in production
@@ -39,6 +40,7 @@ const MainPage = ({
   handleLikeItinerary,
   user,
   handleLogout,
+  navigate,
 }) => {
   return (
     <div className="app-container">
@@ -52,16 +54,30 @@ const MainPage = ({
             <button className="btn btn-purple" onClick={handleLogout}>
               Logout
             </button>
+            <button
+              className="btn btn-purple"
+              onClick={() => navigate("/liked")}
+            >
+              Liked ♥
+            </button>
           </>
         ) : (
           <>
-          <Link to="/login">
-            <button className="btn btn-purple">Login</button>
-          </Link>
-          <Link to="/register">
-          <button className="btn btn-purple">Register</button>
-        </Link>
-        </>
+            <Link to="/login">
+              <button className="btn btn-purple">Login</button>
+            </Link>
+            <Link to="/register">
+              <button className="btn btn-purple">Register</button>
+            </Link>
+            <button
+              className="btn btn-purple"
+              onClick={() => {
+                alert("Please log in first to view liked itineraries.");
+              }}
+            >
+              Liked ♥
+            </button>
+          </>
         )}
         <button className="btn btn-purple" onClick={() => setShowFilter(true)}>
           Filter
@@ -110,7 +126,6 @@ const App = () => {
   );
 };
 
-
 const AppRoutes = () => {
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -135,16 +150,15 @@ const AppRoutes = () => {
     }
   };
 
-
   useEffect(() => {
     fetchItineraries();
     const checkUser = async () => {
       const token = localStorage.getItem("authToken");
-  
+
       if (token) {
         try {
           const payload = await verifyToken(token);
-          setUser(payload.username); // Use the payload to set user
+          setUser(payload.username);
         } catch (err) {
           console.error("Token verification failed:", err);
           localStorage.removeItem("authToken");
@@ -154,7 +168,7 @@ const AppRoutes = () => {
         setUser(null);
       }
     };
-  
+
     checkUser();
   }, [location]);
 
@@ -276,32 +290,33 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-  <Route path="/login" element={<Login />} />
-  <Route path="/register" element={<Register />} />
-  <Route
-    path="/"
-    element={
-      <MainPage
-        itineraries={itineraries}
-        filteredItineraries={filteredItineraries}
-        handleAddItineraryClick={handleAddItineraryClick}
-        showFilter={showFilter}
-        showForm={showForm}
-        handleApplyFilter={handleApplyFilter}
-        setShowFilter={setShowFilter}
-        setShowForm={setShowForm}
-        addItinerary={addItinerary}
-        handleCardClick={handleCardClick}
-        expandedCard={expandedCard}
-        handleCloseModal={handleCloseModal}
-        handleLikeItinerary={handleLikeItinerary}
-        user={user}
-        handleLogout={handleLogout}
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
+      <Route path="/liked" element={<LikedItineraries />} />
+      <Route
+        path="/"
+        element={
+          <MainPage
+            itineraries={itineraries}
+            filteredItineraries={filteredItineraries}
+            handleAddItineraryClick={handleAddItineraryClick}
+            showFilter={showFilter}
+            showForm={showForm}
+            handleApplyFilter={handleApplyFilter}
+            setShowFilter={setShowFilter}
+            setShowForm={setShowForm}
+            addItinerary={addItinerary}
+            handleCardClick={handleCardClick}
+            expandedCard={expandedCard}
+            handleCloseModal={handleCloseModal}
+            handleLikeItinerary={handleLikeItinerary}
+            user={user}
+            handleLogout={handleLogout}
+            navigate={navigate}
+          />
+        }
       />
-    }
-  />
-</Routes>
-
+    </Routes>
   );
 };
 
