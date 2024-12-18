@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import AddItineraryForm from "./AddItineraryForm";
 import ItineraryCard from "./ItineraryCard";
 import { supabase } from "@/supabase/Supabase";
@@ -11,6 +11,16 @@ import Likes from "./Likes";
 import { SignJWT, jwtVerify } from "jose"; // Import jose for JWT handling
 
 const SECRET_KEY = "your_secret_key"; // Replace with a secure key in production
+
+const verifyToken = async (token) => {
+  try {
+    const decoded = await jwtVerify(token, new TextEncoder().encode(SECRET_KEY));
+    return decoded.payload; // Access the payload from the decoded token
+  } catch (error) {
+    console.error("Token verification failed:", error);
+    throw error; // Rethrow the error if needed
+  }
+};
 
 // MainPage Component
 const MainPage = ({
@@ -106,6 +116,7 @@ const AppRoutes = () => {
   const [user, setUser] = useState(null);
 
   const navigate = useNavigate();
+  const location = useLocation();
 
   const fetchItineraries = async () => {
     try {
@@ -120,21 +131,28 @@ const AppRoutes = () => {
     }
   };
 
+
   useEffect(() => {
     fetchItineraries();
-
-    // Check for JWT token in localStorage
-    const token = localStorage.getItem("authToken");
-    if (token) {
-      try {
-        const decoded = jwtVerify(token, new TextEncoder().encode(SECRET_KEY)); // Verifying token using jose
-        setUser(decoded.payload.username); // Extract username from the payload
-      } catch (err) {
-        console.error("Invalid token:", err);
-        localStorage.removeItem("authToken");
+    const checkUser = async () => {
+      const token = localStorage.getItem("authToken");
+  
+      if (token) {
+        try {
+          const payload = await verifyToken(token);
+          setUser(payload.username); // Use the payload to set user
+        } catch (err) {
+          console.error("Token verification failed:", err);
+          localStorage.removeItem("authToken");
+          setUser(null);
+        }
+      } else {
+        setUser(null);
       }
-    }
-  }, []);
+    };
+  
+    checkUser();
+  }, [location]);
 
   const addItinerary = async (newItinerary) => {
     try {
@@ -181,9 +199,8 @@ const AppRoutes = () => {
   };
 
   const handleLikeItinerary = async (itineraryId) => {
-    console.log("Like funtion triggered");
+    console.log("Like function triggered");
     const token = localStorage.getItem("authToken");
-    console.log("Token extracted: ", token);
     if (!token) {
       console.error("User not authenticated. Please login.");
       navigate("/login");
@@ -192,33 +209,55 @@ const AppRoutes = () => {
 
     try {
       const decoded = await jwtVerify(token, new TextEncoder().encode(SECRET_KEY));
-      console.log("Decoded payload: ", decoded);
       const username = decoded.payload.username;
-      console.log("Username: ", username);
+
       const { data, error } = await supabase
-      .from("tours")
-      .select("likes")
-      .eq("id", itineraryId)
-      .single(); // Assuming `id` is unique, use `.single()` to get a single record
-
-    if (error) {
-      console.error("Error fetching likes:", error);
-      return;
-    }
-
-    const currentLikes = data.likes;
-
-    // Update the likes value by incrementing it by 1
-    const { error: updateError } = await supabase
-      .from("tours")
-      .update({ likes: currentLikes + 1 })
-      .eq("id", itineraryId);
+        .from("tours")
+        .select("likes")
+        .eq("id", itineraryId)
+        .single();
 
       if (error) {
-        console.error("Error updating likes:", error);
-      } else {
-        console.log(`Itinerary liked by user: ${username}`);
-        fetchItineraries();
+        console.error("Error fetching likes:", error);
+        return;
+      }
+
+      const currentLikes = data.likes;
+
+      const { error: updateError } = await supabase
+        .from("tours")
+        .update({ likes: currentLikes + 1 })
+        .eq("id", itineraryId);
+
+      if (updateError) {
+        console.error("Error updating likes:", updateError);
+        return;
+      }
+
+      const { data: userData, error: fetchUserError } = await supabase
+        .from("user")
+        .select("liked_itineraries")
+        .eq("username", username)
+        .single();
+
+      if (fetchUserError) {
+        console.error("Error fetching user's liked itineraries:", fetchUserError);
+        return;
+      }
+
+      let likedItineraries = userData.liked_itineraries || [];
+
+      if (!likedItineraries.includes(itineraryId)) {
+        likedItineraries.push(itineraryId);
+
+        const { error: updateUserError } = await supabase
+          .from("user")
+          .update({ liked_itineraries: likedItineraries })
+          .eq("username", username);
+
+        if (updateUserError) {
+          console.error("Error updating user's liked itineraries:", updateUserError);
+        }
       }
     } catch (err) {
       console.error("Error verifying token:", err);
