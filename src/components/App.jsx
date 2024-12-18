@@ -7,22 +7,22 @@ import { supabase } from "@/supabase/Supabase";
 import "./App.css";
 import Filter from "./Filter.jsx";
 import Login from "./Login";
+import Register from "./Register";
 import Likes from "./Likes";
-import { SignJWT, jwtVerify } from "jose"; // Import jose for JWT handling
+import { SignJWT, jwtVerify } from "jose";
 
 const SECRET_KEY = "your_secret_key"; // Replace with a secure key in production
 
 const verifyToken = async (token) => {
   try {
     const decoded = await jwtVerify(token, new TextEncoder().encode(SECRET_KEY));
-    return decoded.payload; // Access the payload from the decoded token
+    return decoded.payload; 
   } catch (error) {
     console.error("Token verification failed:", error);
-    throw error; // Rethrow the error if needed
+    throw error;
   }
 };
 
-// MainPage Component
 const MainPage = ({
   itineraries,
   filteredItineraries,
@@ -54,9 +54,14 @@ const MainPage = ({
             </button>
           </>
         ) : (
+          <>
           <Link to="/login">
             <button className="btn btn-purple">Login</button>
           </Link>
+          <Link to="/register">
+          <button className="btn btn-purple">Register</button>
+        </Link>
+        </>
         )}
         <button className="btn btn-purple" onClick={() => setShowFilter(true)}>
           Filter
@@ -97,7 +102,6 @@ const MainPage = ({
   );
 };
 
-// App Component
 const App = () => {
   return (
     <Router>
@@ -106,7 +110,7 @@ const App = () => {
   );
 };
 
-// Separate Routes to avoid the `useNavigate` issue
+
 const AppRoutes = () => {
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -272,30 +276,32 @@ const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route
-        path="/"
-        element={
-          <MainPage
-            itineraries={itineraries}
-            filteredItineraries={filteredItineraries}
-            handleAddItineraryClick={handleAddItineraryClick}
-            showFilter={showFilter}
-            showForm={showForm}
-            handleApplyFilter={handleApplyFilter}
-            setShowFilter={setShowFilter}
-            setShowForm={setShowForm}
-            addItinerary={addItinerary}
-            handleCardClick={handleCardClick}
-            expandedCard={expandedCard}
-            handleCloseModal={handleCloseModal}
-            handleLikeItinerary={handleLikeItinerary}
-            user={user}
-            handleLogout={handleLogout}
-          />
-        }
+  <Route path="/login" element={<Login />} />
+  <Route path="/register" element={<Register />} />
+  <Route
+    path="/"
+    element={
+      <MainPage
+        itineraries={itineraries}
+        filteredItineraries={filteredItineraries}
+        handleAddItineraryClick={handleAddItineraryClick}
+        showFilter={showFilter}
+        showForm={showForm}
+        handleApplyFilter={handleApplyFilter}
+        setShowFilter={setShowFilter}
+        setShowForm={setShowForm}
+        addItinerary={addItinerary}
+        handleCardClick={handleCardClick}
+        expandedCard={expandedCard}
+        handleCloseModal={handleCloseModal}
+        handleLikeItinerary={handleLikeItinerary}
+        user={user}
+        handleLogout={handleLogout}
       />
-    </Routes>
+    }
+  />
+</Routes>
+
   );
 };
 
