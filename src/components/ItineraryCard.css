@@ -1,66 +1,131 @@
-/* ItineraryCard.css */
-
 .itinerary-card {
-    background-color: #000;
-    border: 1px solid #fff;
-    color: #fff;
-    padding: 15px;
-    border-radius: 10px;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s ease;
+  background-color: #000;
+  border: 1px solid #fff;
+  color: #fff;
+  padding: 1.25rem;
+  border-radius: 10px;
+  text-align: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  height: 100%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.itinerary-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}
+
+.itinerary-card h2 {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.4;
+}
+
+.itinerary-card p {
+  font-size: 0.9rem;
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.itinerary-card .description {
+  font-size: 0.85rem;
+  color: #aaa;
+  flex-grow: 1;
+}
+
+.itinerary-card .card-footer {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+
+.itinerary-card.blurred {
+  filter: blur(4px);
+  transition: filter 0.3s ease;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal-content {
+  position: relative;
+  width: 80vw;
+  max-width: 600px;
+  background: #fff;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 1024px) {
+  .itinerary-card {
+    min-height: 180px;
   }
-  
-  .itinerary-card:hover {
-    transform: scale(1.05);
+}
+
+@media screen and (max-width: 768px) {
+  .itinerary-card {
+    padding: 1rem;
+    min-height: 160px;
   }
-  
+
   .itinerary-card h2 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+    font-size: 1.1rem;
+    margin-bottom: 0.5rem;
   }
-  
+
   .itinerary-card p {
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-  
-  .itinerary-card .description {
     font-size: 0.85rem;
-    color: #aaa;
+    margin-bottom: 0.5rem;
   }
-  
-  .itinerary-card .card-footer {
-    margin-top: 10px;
-    font-size: 0.85rem;
-    font-weight: bold;
-  }
-  
-  .itinerary-card.blurred {
-    filter: blur(4px); /* Blur the card background */
-    transition: filter 0.3s ease; /* Smooth transition for blurring effect */
-  }
-  
-  .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.3); /* Semi-transparent background for overlay */
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1000; /* Ensure the overlay appears above other content */
-  }
-  
+
   .modal-content {
-    position: relative;
-    width: 80vw; /* Adjust width as needed */
-    max-width: 600px; /* Optional: max-width for large screens */
-    background: #fff; /* Background color for the modal content */
-    padding: 20px; /* Padding around the content */
-    border-radius: 8px; /* Optional: rounded corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Optional: add shadow for depth */
+    width: 90vw;
+    padding: 1.5rem;
   }
-  
+}
+
+@media screen and (max-width: 480px) {
+  .itinerary-card {
+    min-height: 140px;
+    padding: 0.875rem;
+  }
+
+  .itinerary-card h2 {
+    font-size: 1rem;
+  }
+
+  .itinerary-card .description {
+    font-size: 0.8rem;
+  }
+
+  .itinerary-card .card-footer {
+    margin-top: 0.75rem;
+    font-size: 0.8rem;
+  }
+
+  .modal-content {
+    width: 95vw;
+    padding: 1rem;
+  }
+
+  .modal-overlay {
+    padding: 0.5rem;
+  }
+}

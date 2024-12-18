@@ -1,75 +1,143 @@
-/* Set the entire page background to dark black */
+/* Base styles */
 body {
-    background-color: #000;
-    color: #fff;
-    margin: 0;
-    padding: 0;
-    height: 100vh;
-  }
-  
-  /* Container for ItineraryGallery */
-  .container {
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-  
-  /* Grid styling for itinerary cards */
+  background-color: #000;
+  color: #fff;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 1.5rem;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.itinerary-gallery {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.25rem;
+  height: 80vh;
+  overflow-y: auto;
+  margin-top: 1.25rem;
+  padding: 0.5rem;
+}
+
+.itinerary-card {
+  background-color: #000;
+  border: 1px solid #fff;
+  color: #fff;
+  transition: transform 0.2s;
+  position: relative;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.itinerary-card:hover {
+  transform: scale(1.03);
+}
+
+.card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.75rem;
+}
+
+.card-subtitle {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.details {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.details .btn {
+  border-radius: 20px;
+  padding: 0.5rem 1rem;
+}
+
+.details .badge {
+  background-color: #000;
+  color: #fff;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  border-radius: 15px;
+}
+
+/* Responsive Breakpoints */
+@media screen and (max-width: 1200px) {
   .itinerary-gallery {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    height: 80vh; 
-/* Occupy 80% of the viewport height for cards */
-    overflow-y: auto;
-    margin-top: 10px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
   }
-  
-  /* Styles for the itinerary cards */
-  .itinerary-card {
-    background-color: #000; /* Slightly lighter black for the card background */
-    border: 1px solid #fff; /* White borders */
-    color: #fff; /* White text */
-    transition: transform 0.2s;
-    position: relative;
-    padding: 10px;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
+}
+
+@media screen and (max-width: 900px) {
+  .itinerary-gallery {
+    grid-template-columns: repeat(2, 1fr);
+    height: 75vh;
   }
-  
-  .itinerary-card:hover {
-    transform: scale(1.05); /* Slight zoom on hover */
+
+  .container {
+    padding: 1rem;
   }
-  
+}
+
+@media screen and (max-width: 600px) {
+  .itinerary-gallery {
+    grid-template-columns: 1fr;
+    height: auto;
+    max-height: 85vh;
+    gap: 0.875rem;
+  }
+
+  .container {
+    padding: 0.75rem;
+  }
+
   .card-title {
-    font-size: 1.25rem;
-    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
   }
-  
+
   .card-subtitle {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 0.875rem;
   }
-  
+
+  .itinerary-card {
+    padding: 1rem;
+  }
+
   .details {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 1rem;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
   }
-  
-  .details .btn {
-    border-radius: 20px;
-    padding: 0.25rem 0.75rem;
-  }
-  
+
+  .details .btn,
   .details .badge {
-    background-color: #000;
-    color: #fff;
-    font-size: 0.85rem;
-    padding: 0.5rem;
-    border-radius: 15px;
+    width: 100%;
+    text-align: center;
   }
-  
+}
+
+@media screen and (max-width: 480px) {
+  .container {
+    padding: 0.5rem;
+  }
+
+  .itinerary-gallery {
+    margin-top: 0.75rem;
+  }
+}
