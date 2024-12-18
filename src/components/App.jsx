@@ -45,9 +45,11 @@ const MainPage = ({
   return (
     <div className="app-container">
       <div className="header">
-        <h1>
-          <b>TravellingSalesman</b>
-        </h1>
+      <Link to="/">
+    <button style={{ border: 'none', background: 'none', padding: 0, fontSize: 'inherit', cursor: 'pointer' }}>
+      <b>TravellingSalesman</b>
+    </button>
+  </Link>
         {user ? (
           <>
             <span>Welcome, {user}</span>
