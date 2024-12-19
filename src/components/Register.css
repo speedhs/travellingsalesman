@@ -1,0 +1,29 @@
+.register-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 50px;
+  }
+  
+  .register-container label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .register-container input {
+    padding: 8px;
+    margin: 5px 0;
+    width: 100%;
+    max-width: 300px;
+  }
+  
+  .register-container .btn {
+    margin-top: 15px;
+  }
+  
+  .error {
+    color: red;
+    font-size: 14px;
+    margin-bottom: 10px;
+  }
+  

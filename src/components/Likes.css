@@ -2,8 +2,6 @@
     display: flex;
     align-items: center;
     cursor: pointer;
-    color: brown;
-    border-color: blue;
   }
   
   .heart-icon {

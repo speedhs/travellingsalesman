@@ -1,0 +1,38 @@
+/* Add this to your global CSS or inside your App.css */
+.btn-purple {
+    background-color: #6a5acd;
+    color: white;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    padding: 10px 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .btn-purple:hover {
+    background-color: #483d8b;
+  }
+  
+  .liked-itineraries-container {
+    padding: 20px;
+  }
+  
+  .back-button {
+    margin-bottom: 20px;
+  }
+  
+  .itinerary-gallery {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+  }
+  
+  .itinerary-gallery h2 {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
