@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef } from "react";
+import React, { useState, useRef } from "react";
 import {
   Card,
   CardContent,
@@ -20,35 +20,23 @@ const ItineraryCard = ({
   handleLikeItinerary,
 }) => {
   const cardRef = useRef(null);
+  const [internalExpanded, setInternalExpanded] = useState(false);
 
-  // Handle card click to expand
   const handleCardClick = (e) => {
-    e.stopPropagation(); // Prevent click event from bubbling up
+    e.stopPropagation();
     onClick(itinerary);
+    setInternalExpanded(true);
   };
 
-  // Close modal if clicked outside
-  useEffect(() => {
-    if (typeof document !== "undefined" && isExpanded) {
-      const handleClickOutside = (e) => {
-        if (cardRef.current && !cardRef.current.contains(e.target)) {
-          onClose(); // Close modal if click is outside
-        }
-      };
-
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }
-  }, [isExpanded, onClose]);
+  const handleOverlayClick = () => {
+    setInternalExpanded(false);
+    onClose();
+  };
 
   return (
     <>
-      {/* Card Component */}
       <Card
-        className={`itinerary-card ${isExpanded ? "blurred" : ""}`}
+        className={`itinerary-card ${isExpanded || internalExpanded ? "blurred" : ""}`}
         onClick={handleCardClick}
       >
         <CardHeader>
@@ -65,15 +53,18 @@ const ItineraryCard = ({
           </p>
         </CardFooter>
         <Likes
-          initialLikes={itinerary.likes} // Pass initial likes count
-          onLike={() => handleLikeItinerary(itinerary.id, itinerary.likes)} // Handle like functionality
+          initialLikes={itinerary.likes}
+          onLike={() => handleLikeItinerary(itinerary.id, itinerary.likes)}
         />
       </Card>
 
-      {/* Modal Overlay */}
-      {isExpanded && (
-        <div className="modal-overlay">
-          <div className="modal-content" ref={cardRef}>
+      {(isExpanded || internalExpanded) && (
+        <div className="modal-overlay" onClick={handleOverlayClick}>
+          <div
+            className="modal-content"
+            ref={cardRef}
+            onClick={(e) => e.stopPropagation()} // Prevent closing when clicking inside the modal
+          >
             <Card>
               <CardHeader>
                 <CardTitle>{itinerary.title}</CardTitle>
