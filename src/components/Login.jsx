@@ -1,18 +1,33 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { supabase } from "@/supabase/Supabase";
 import { useNavigate } from "react-router-dom";
 import "./Login.css";
+import App from "./App";
 import { SignJWT } from "jose";
 
 
 const SECRET_KEY = "your_secret_key"; // Replace with a secure key in production
 
 const Login = () => {
+  const [currentPath, setCurrentPath] = useState("/login");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
-  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("here in login?")
+    // Update the URL to /login without reloading the page
+    if (window.location.pathname !== "/login") {
+      window.history.pushState({}, "", "/login");
+    }
+  }, []);
+
+  const navigateTo = (path) => {
+    setCurrentPath(path);
+  };
+
+  // const navigate = useNavigate();
 
   const handleLogin = async () => {
     try {
@@ -45,14 +60,15 @@ const Login = () => {
       localStorage.setItem("authToken", token);
   
       console.log("Login successful, token saved!");
-      navigate("/");
+      navigateTo("/");
+      window.location.href = "/";
     } catch (err) {
       console.error("Error: ", err.message || "Unexpected error occurred");
       setError(err.message || "Unexpected error occurred");
     }
   };
   
-
+  
   return (
     <div className="login-container">
       <h2>Login</h2>
@@ -72,6 +88,7 @@ const Login = () => {
       {error && <p className="error-message">{error}</p>}
     </div>
   );
+      
 };
 
 export default Login;
