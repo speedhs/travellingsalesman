@@ -1,6 +1,5 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Route, Routes, Link, useNavigate, useLocation } from "react-router-dom";
 import AddItineraryForm from "./AddItineraryForm";
 import ItineraryCard from "./ItineraryCard";
 import { supabase } from "@/supabase/Supabase";
@@ -17,7 +16,7 @@ const SECRET_KEY = "your_secret_key"; // Replace with a secure key in production
 const verifyToken = async (token) => {
   try {
     const decoded = await jwtVerify(token, new TextEncoder().encode(SECRET_KEY));
-    return decoded.payload; 
+    return decoded.payload;
   } catch (error) {
     console.error("Token verification failed:", error);
     throw error;
@@ -40,16 +39,17 @@ const MainPage = ({
   handleLikeItinerary,
   user,
   handleLogout,
-  navigate,
+  navigateTo,
 }) => {
   return (
     <div className="app-container">
       <div className="header">
-      <Link to="/">
-    <button style={{ border: 'none', background: 'none', padding: 0, fontSize: 'inherit', cursor: 'pointer' }}>
-      <b>TravellingSalesman</b>
-    </button>
-  </Link>
+        <button
+          style={{ border: "none", background: "none", padding: 0, fontSize: "inherit", cursor: "pointer" }}
+          onClick={() => navigateTo("/")}
+        >
+          <b>TravellingSalesman</b>
+        </button>
         {user ? (
           <>
             <span>Welcome, {user}</span>
@@ -58,19 +58,15 @@ const MainPage = ({
             </button>
             <button
               className="btn btn-purple"
-              onClick={() => navigate("/liked")}
+              onClick={() => navigateTo("/liked")}
             >
               Liked ♥
             </button>
           </>
         ) : (
           <>
-            <Link to="/login">
-              <button className="btn btn-purple">Login</button>
-            </Link>
-            <Link to="/register">
-              <button className="btn btn-purple">Register</button>
-            </Link>
+            <button className="btn btn-purple" onClick={() => navigateTo("/login")}>Login</button>
+            <button className="btn btn-purple" onClick={() => navigateTo("/register")}>Register</button>
             <button
               className="btn btn-purple"
               onClick={() => {
@@ -121,14 +117,7 @@ const MainPage = ({
 };
 
 const App = () => {
-  return (
-    <Router>
-      <AppRoutes />
-    </Router>
-  );
-};
-
-const AppRoutes = () => {
+  const [currentPath, setCurrentPath] = useState("/");
   const [itineraries, setItineraries] = useState([]);
   const [showForm, setShowForm] = useState(false);
   const [showFilter, setShowFilter] = useState(false);
@@ -136,8 +125,9 @@ const AppRoutes = () => {
   const [expandedCard, setExpandedCard] = useState(null);
   const [user, setUser] = useState(null);
 
-  const navigate = useNavigate();
-  const location = useLocation();
+  const navigateTo = (path) => {
+    setCurrentPath(path);
+  };
 
   const fetchItineraries = async () => {
     try {
@@ -172,7 +162,7 @@ const AppRoutes = () => {
     };
 
     checkUser();
-  }, [location]);
+  }, [currentPath]);
 
   const addItinerary = async (newItinerary) => {
     try {
@@ -223,7 +213,7 @@ const AppRoutes = () => {
     const token = localStorage.getItem("authToken");
     if (!token) {
       console.error("User not authenticated. Please login.");
-      navigate("/login");
+      navigateTo("/login");
       return;
     }
 
@@ -287,17 +277,20 @@ const AppRoutes = () => {
   const handleLogout = () => {
     localStorage.removeItem("authToken");
     setUser(null);
-    navigate("/login");
+    navigateTo("/login");
   };
 
-  return (
-    <Routes>
-      <Route path="/login" element={<Login />} />
-      <Route path="/register" element={<Register />} />
-      <Route path="/liked" element={<LikedItineraries />} />
-      <Route
-        path="/"
-        element={
+  const renderComponent = () => {
+    switch (currentPath) {
+      case "/login":
+        return <Login />;
+      case "/register":
+        return <Register />;
+      case "/liked":
+        return <LikedItineraries />;
+      case "/":
+      default:
+        return (
           <MainPage
             itineraries={itineraries}
             filteredItineraries={filteredItineraries}
@@ -314,12 +307,13 @@ const AppRoutes = () => {
             handleLikeItinerary={handleLikeItinerary}
             user={user}
             handleLogout={handleLogout}
-            navigate={navigate}
+            navigateTo={navigateTo}
           />
-        }
-      />
-    </Routes>
-  );
+        );
+    }
+  };
+
+  return <div>{renderComponent()}</div>;
 };
 
 export default App;

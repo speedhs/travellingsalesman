@@ -3,6 +3,9 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/supabase/Supabase";
 import "./Register.css"
+import { SignJWT } from "jose";
+
+const SECRET_KEY = "your_secret_key"; 
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -10,7 +13,7 @@ const Register = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const handleRegister = async () => {
     if (password !== confirmPassword) {
@@ -50,7 +53,19 @@ const Register = () => {
       }
 
       // Redirect to login page on successful registration
-      navigate("/login");
+      const secret = new TextEncoder().encode(SECRET_KEY); // Convert secret to Uint8Array
+      const token = await new SignJWT({ username: username })
+        .setProtectedHeader({ alg: "HS256" })
+        .setExpirationTime("1h")
+        .sign(secret);
+  
+      console.log("Token: ", token);
+  
+      // Store token in localStorage
+      localStorage.setItem("authToken", token);
+  
+      console.log("Login successful, token saved!");
+      window.location.href = "/";
     } catch (err) {
       console.error("Unexpected error:", err);
       setError("An error occurred. Please try again.");

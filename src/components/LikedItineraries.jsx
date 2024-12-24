@@ -5,26 +5,20 @@ import { supabase } from "@/supabase/Supabase";
 import { jwtVerify } from "jose";
 import ItineraryCard from "./ItineraryCard";
 import Likes from "./Likes";
+import Login from "./Login";
 
 const SECRET_KEY = "your_secret_key"; // Replace with a secure key in production
 
 const LikedItineraries = () => {
   const [likedItineraries, setLikedItineraries] = useState([]);
   const [expandedCard, setExpandedCard] = useState(null); // State to track expanded card
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   useEffect(() => {
     const fetchLikedItineraries = async () => {
       const token = localStorage.getItem("authToken");
 
-      if (!token) {
-        alert("Please log in to view liked itineraries.");
-        navigate("/login");
-        return;
-      }
-
       try {
-        // Verify the JWT token to extract user info
         const decoded = await jwtVerify(token, new TextEncoder().encode(SECRET_KEY));
         const username = decoded.payload.username;
 
@@ -57,12 +51,12 @@ const LikedItineraries = () => {
         }
       } catch (err) {
         console.error("Error verifying token:", err);
-        navigate("/login");
+        return <Login />
       }
     };
 
     fetchLikedItineraries();
-  }, [navigate]);
+  }, [window.location.href]);
 
   const handleCardClick = (itinerary) => {
     setExpandedCard(itinerary === expandedCard ? null : itinerary); // Toggle expanded card
@@ -77,7 +71,7 @@ const LikedItineraries = () => {
       <div className="liked-itineraries-container">
         <button
           className="btn btn-purple back-button"
-          onClick={() => navigate("/")}
+          onClick={() => window.location.href = "/"}
         >
           TravellingSalesman
         </button>
